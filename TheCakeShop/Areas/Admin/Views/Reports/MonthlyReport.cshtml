@@ -1,0 +1,195 @@
+﻿@model IEnumerable<TheCakeShop.Areas.Admin.Models.ViewModels.Shop.OrdersForAdmin>
+
+@{
+    ViewBag.Title = "Monthly Report";
+}
+
+@section Styles {
+    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+
+    <style>
+
+        .btn-group, .btn-group-vertical {
+            position: relative;
+            display: -webkit-inline-box;
+            display: -ms-inline-flexbox;
+            display: inline-flex;
+            vertical-align: middle;
+            top: 30px;
+        }
+
+        .date {
+            max-width: 30%;
+        }
+    </style>
+
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+
+            <h2 class="text-center display-4">Monthly Report</h2>
+
+            @if (!Model.Any())
+            {
+                <h3 class="text-center display-4">There are no Orders.</h3>
+            }
+            else
+            {
+
+                <p id="date_filter">
+                    <span id="date-label-from" class="date-label"><b>From Date or Month:</b></span><input class="date_range_filter date form-control" type="text" id="datepicker_from" />
+                    <span id="date-label-to" class="date-label"><b>To Date or Month:</b></span><input class="date_range_filter date form-control" type="text" id="datepicker_to" />
+                </p>
+
+                <table id="datatable" class="table table-bordered dataTable no-footer">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="text-center">
+                                Order Number
+                            </th>
+                            <th class="text-center">
+                                Username
+                            </th>
+                            <th class="text-center">
+                                Order Details
+                            </th>
+                            <th class="text-center">
+                                Created At
+                            </th>
+                            <th class="text-center">
+                                Total
+                            </th>
+                        </tr>
+                    </thead>
+
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.OrderNumber)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Username)
+                            </td>
+                            <td class="text-center">
+                                @foreach (var item2 in item.ProductsAndQty)
+                                {
+                                    @item2.Key @:x @item2.Value <br />
+                                }
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.CreatedAt)
+                            </td>
+                            <td class="text-center">
+                                $@Html.DisplayFor(modelItem => item.Total)
+                            </td>
+                        </tr>
+                    }
+                    <tfoot>
+                        <tr class="text-center">
+                            <th colspan="4" style="text-align:right"><b>Total:</b></th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+    <script>
+
+        $(function () {
+            var oTable = $('#datatable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'excel', 'pdf', 'print'
+                ],
+                "footerCallback": function (row, data, start, end, display) {
+                    var api = this.api(), data;
+
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    // Total over this page
+                    pageTotal = api
+                        .column(4, { page: 'current' })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Update footer
+                    $(api.column(4).footer()).html(
+                        '<b>' + '$' + pageTotal + '</b>'
+                    );
+                }
+            });
+
+
+
+
+            $('#datepicker_from').datepicker({
+                "onSelect": function (date) {
+                    minDateFilter = new Date(date).getTime();
+                    oTable.draw();
+                }
+            }).keyup(function () {
+                minDateFilter = new Date(this.value).getTime();
+                oTable.draw();
+            });
+
+            $('#datepicker_to').datepicker({
+                "onSelect": function (date) {
+                    maxDateFilter = new Date(date).getTime();
+                    oTable.draw();
+                }
+            }).keyup(function () {
+                maxDateFilter = new Date(this.value).getTime();
+                oTable.draw();
+            });
+
+        });
+
+        // Date range filter
+        minDateFilter = "";
+        maxDateFilter = "";
+
+        $.fn.dataTableExt.afnFiltering.push(
+            function (oSettings, aData, iDataIndex) {
+                if (typeof aData._date == 'undefined') {
+                    aData._date = new Date(aData[3]).getTime();
+                }
+
+                if (minDateFilter && !isNaN(minDateFilter)) {
+                    if (aData._date < minDateFilter) {
+                        return false;
+                    }
+                }
+
+                if (maxDateFilter && !isNaN(maxDateFilter)) {
+                    if (aData._date > maxDateFilter) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        );
+
+    </script>
+
+
+}

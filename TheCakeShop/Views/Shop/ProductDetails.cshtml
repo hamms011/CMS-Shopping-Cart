@@ -1,0 +1,176 @@
+﻿@model TheCakeShop.Models.ViewModels.Products.ProductVM
+
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<style>
+    .ajaxmsg {
+        background: #5bd05b;
+        color: white;
+        padding: 10px;
+        display: none;
+        position: absolute;
+        border-radius: 5px;
+        top: 239px;
+        right: 130px;
+        z-index: 1;
+    }
+
+    .loaderr {
+        display: none;
+    }
+
+    .ib {
+        display: inline-block !important;
+    }
+</style>
+
+<!-- Breadcrumbs -->
+<div class="container">
+    <ol class="breadcrumb">
+        <li>
+            <a href="/">Home</a>
+        </li>
+        <li>
+            <a>Shop</a>
+        </li>
+        <li>
+            <a>@Model.CategoryName</a>
+        </li>
+        <li class="active">
+            @Model.Name
+        </li>
+    </ol> <!-- end breadcrumbs -->
+</div>
+
+<!-- Single Product -->
+<section class="section-wrap single-product">
+    <div class="container relative">
+        <div class="row">
+            <div class="col-sm-6 col-xs-12 mb-60">
+                <div class="gallery-cell">
+                    <a>
+                        <img src="/Images/Uploads/Products/@Model.Id/@Model.ImageName" />
+                    </a>
+                </div>
+
+                <hr />
+                <hr />
+                <hr />
+                <div class="gallery-thumbs fancyboxdiv">
+                    @foreach (var image in Model.GalleryImages)
+                    {
+                        <div class="gallery-cell">
+                            <a href="/Images/Uploads/Products/@Model.Id/Gallery/@image" class="fancybox" rel="gallery1">
+                                <img src="/Images/Uploads/Products/@Model.Id/Gallery/Thumbs/@image" />
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+            <!-- end col img slider -->
+
+
+            <div class="col-sm-6 col-xs-12 product-description-wrap">
+                <h1 class="product-title">@Html.DisplayFor(model => model.Name)</h1>
+                <span class="price">
+                    <ins>
+                        <span class="ammount">$@Html.DisplayFor(model => model.Price)</span>
+                    </ins>
+                </span>
+                <p class="product-description">@Html.DisplayFor(model => model.Description)</p>
+                @if (Request.IsAuthenticated)
+                {
+                    <ul class="product-actions clearfix">
+
+                        <li class="">
+                            <a href="#" class="btn btn-color btn-lg add-to-cart left addtocart">
+                                <span>Add to Cart</span>
+                            </a>
+                        </li>
+                        <li>
+                            <div class="left">
+                                <span class="loaderr">
+                                    <img src="~/Content/img/89.gif" />
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                    <span class="ajaxmsg">
+                        The @Model.Name has been added to your cart.
+                    </span>
+                }
+                <br />
+                <br />
+                <br />
+                <div class="product_meta">
+                    <span class="sku">SKU: <a>@Model.Id</a></span>
+                    <span class="posted_in">Category: <a>@Model.CategoryName</a></span>
+                </div>
+                <div class="socials-share clearfix">
+                    <div class="social-icons rounded">
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-google-plus"></i></a>
+                        <a href="#"><i class="fa fa-linkedin"></i></a>
+                        <a href="#"><i class="fa fa-vimeo"></i></a>
+                    </div>
+                </div>
+            </div> <!-- end col product description -->
+        </div> <!-- end row -->
+
+    </div> <!-- end container -->
+</section> <!-- end single product -->
+
+<link href="~/Content/jquery.fancybox.css" rel="stylesheet" />
+
+@section Scripts {
+
+
+    <script src="~/Scripts/jquery.fancybox.js"></script>
+
+    <script>
+
+        $(function () {
+
+
+            /*
+            * Fancybox
+            */
+
+            $(".fancybox").fancybox();
+
+            /////////////////////////////////////////
+
+            /*
+            * Add to Cart
+            */
+
+            $("a.addtocart").click(function (e) {
+        e.preventDefault();
+
+        $("span.loaderr").addClass("ib");
+
+        var url = "/cart/AddToCartPartial";
+
+        $.get(url, { id: @Model.Id }, function (data) {
+            $(".ajaxcart").html(data);
+        }).done(function () {
+            $("span.loaderr").removeClass("ib");
+            $("span.ajaxmsg").addClass("ib");
+            setTimeout(function () {
+                $("span.ajaxmsg").fadeOut("fast");
+                $("span.ajaxmsg").removeClass("ib");
+            }, 2000);
+        });
+    });
+
+            /////////////////////////////////////////
+
+        });
+
+    </script>
+
+
+}

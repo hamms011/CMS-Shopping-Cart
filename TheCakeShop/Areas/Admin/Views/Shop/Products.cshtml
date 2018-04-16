@@ -1,0 +1,151 @@
+﻿@model IEnumerable<TheCakeShop.Models.ViewModels.Products.ProductVM>
+
+@{
+    ViewBag.Title = "Products";
+}
+
+
+@using PagedList.Mvc;
+@using PagedList;
+
+@section Styles {
+    <link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+}
+
+<script type="text/javascript">
+    @if (TempData["DM"] != null)
+    {
+        <text>
+            swal({
+                type: 'info',
+                title: '@TempData["DM"]',
+                showConfirmButton: false,
+                animation: false,
+                customClass: 'animated tada',
+                timer: 1700
+                })
+        </text>
+    }
+</script>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+            <h4 class="text-center display-4">Manage Cakes</h4>
+            <hr />
+            <div class="form-group">
+                <label class="col-4 col-form-label">Select Category:</label>
+                <div class="col-md-10">
+                    <select id="SelectedCategory" name="SelectedCategory" class="form-control" style="width: 50%;">
+
+                        <option value="0">All</option>
+                        @foreach (var item in ViewBag.Categories)
+                        {
+                            if (ViewBag.SelectedCat == item.Value)
+                            {
+                                <option selected="selected" value="@item.Value">@item.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Value">@item.Text</option>
+
+                            }
+                        }
+                    </select>
+                    <br />
+                    <p>
+                        @Html.ActionLink("Add New Product", "AddProduct", null, new { @class = "btn btn-success waves-effect waves-light btn-lg" })
+                    </p>
+                </div>
+            </div>
+            <br />
+
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="text-center">
+                            Name
+                        </th>
+                        <th class="text-center">
+                            Description
+                        </th>
+                        <th class="text-center">
+                            Price
+                        </th>
+                        <th class="text-center">
+                            Image Name
+                        </th>
+                        <th class="text-center">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+
+
+                @foreach (var product in ViewBag.OnePageOfProducts)
+                {
+                    <tr>
+                        <td class="text-center">
+                            @product.Name
+                        </td>
+                        <td class="text-center">
+                            @product.Description
+                        </td>
+                        <td class="text-center">
+                            $@product.Price
+                        </td>
+                        <td class="text-center">
+                            <a href="/Admin/Shop/EditProduct/@product.Id">
+                                <img src="/Images/Uploads/Products/@product.Id/Thumbs/@product.ImageName" class="img-responsive img-thumbnail" />
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            @Html.ActionLink("Edit", "EditProduct", new { id = product.Id }, new { @class = "btn btn-purple waves-effect waves-light btn-sm" })
+                            @Html.ActionLink("Delete", "DeleteProduct", new { id = product.Id }, new { @class = "btn btn-danger waves-effect waves-light btn-sm delete" })
+
+                        </td>
+                    </tr>
+                }
+
+
+            </table>
+            <hr />
+
+            <span class="text-center">
+                @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Products", new { page, catId = ViewBag.SelectedCat }))
+            </span>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+
+
+    <script>
+
+        $(function () {
+
+            /*
+             * Select cake from specified category
+             */
+
+            $("#SelectedCategory").on("change", function () {
+                var url = $(this).val();
+
+                if (url) {
+                    window.location = "/Admin/Shop/Products?catId=" + url;
+                }
+
+                return false;
+            });
+
+
+            ///////////////////////////////////////////
+
+        });
+
+    </script>
+}
+

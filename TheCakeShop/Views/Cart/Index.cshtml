@@ -1,0 +1,318 @@
+﻿@model IEnumerable<TheCakeShop.Models.ViewModels.Cart.CartVM>
+
+@{
+    ViewBag.Title = "Cart Details";
+    int count = 1;
+}
+
+
+@section Styles
+    {
+
+    <style>
+        .ajaxbg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: none;
+            right: 22px;
+            bottom: -20px;
+            left: -30px;
+        }
+
+            .ajaxbg span {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate3d(-50% -50%, 0)
+            }
+
+        form.paypalform {
+            position: absolute;
+            left: -2000px;
+        }
+    </style>
+
+}
+
+<!-- Page Title -->
+<section class="page-title text-center">
+    <div class="container relative clearfix">
+        <div class="title-holder">
+            <div class="title-text">
+                <h1 class="uppercase">Your Cart</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-wrap shopping-cart pt-0">
+    <div class="container relative">
+        @if (ViewBag.Message != null)
+        {
+            <h1 class="uppercase">Cart is empty</h1>
+        }
+        else
+        {
+            <div class="ajaxbg">
+                <span>
+                    <img src="~/Content/img/ajax-loader.gif" />
+                </span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-wrap mb-30">
+                        <table class="shop_table cart table">
+                            <thead>
+                                <tr>
+                                    <th class="product-name"></th>
+                                    <th class="product-name">Cake Name</th>
+                                    <th class="product-name">Quantity</th>
+                                    <th class="product-price">Price</th>
+                                    <th class="product-quantity"></th>
+                                    <th class="product-quantity">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr class="cart_item">
+                                        <td class="product-thumbnail">
+                                            <a>
+                                                <img src="/Images/Uploads/Products/@item.ProductId/Thumbs/@item.Image">
+                                            </a>
+                                        </td>
+                                        <td class="product-name" style="font-family: Maven Pro; color: #000; text-transform: uppercase">
+                                            <span>
+                                                @Html.DisplayFor(modelItem => item.ProductName)
+                                            </span>
+                                        </td>
+                                        <td class="qty@(item.ProductId)" style="font-family: Maven Pro; color: #000;">
+                                            <span>
+                                                @Html.DisplayFor(modelItem => item.Quantity)
+                                            </span>
+                                        </td>
+                                        <td class="product-price" style="font-family: Maven Pro; color: #000;">
+                                            <span class="amount">
+                                                $@Html.DisplayFor(modelItem => item.Price)
+                                            </span>
+                                        </td>
+                                        <td class="product-quantity text-center">
+                                            <a href="#" class="incproduct" data-id="@item.ProductId" style="font-size: 25px;"><i class="icon icon_plus-box"></i></a>
+                                            <a href="#" class="decproduct" data-id="@item.ProductId" style="font-size: 25px;"><i class="icon icon_minus-box"></i></a>
+                                        </td>
+                                        <td class="product-price total@(item.ProductId)" style="font-family: Maven Pro; color: #000;">
+                                            <span class="amount">
+                                                $@Html.DisplayFor(modelItem => item.Total)
+                                            </span>
+                                        </td>
+                                        <td class="product-remove">
+                                            <a href="#" class="remove removeproduct" title="Remove this item" data-id="@item.ProductId">
+                                                <i class="icon icon_close"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row mb-50">
+                        <div class="col-md-7">
+                            <div class="actions right">
+                                <div class="wc-proceed-to-checkout">
+                                    <a href="" class="btn btn-md btn-color placeorder"><span>proceed to checkout</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="paypaldiv">
+                <form class="paypalform" action="http://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                    <input type="hidden" name="cmd" value="_cart">
+                    <input type="hidden" name="upload" value="1">
+                    <input type="hidden" name="business" value="hammadahmed95-facilitator@gmail.com">
+
+                    @foreach (var item in Model)
+                    {
+                        <input type="hidden" name="item_name_@count" value="@item.ProductName" />
+                        <input type="hidden" name="amount_@count" value="@item.Price">
+                        <input type="hidden" name="quantity_@count" value="@item.Quantity">
+                        count++;
+                    }
+
+                    <input type="hidden" name="currency_code" value="USD">
+                    <input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but01.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+                </form>
+            </div>
+        }
+        <div class="row">
+            <div class="col-md-4 col-md-offset-8">
+                <div class="cart_totals">
+                    <h2 class="heading relative heading-small uppercase mb-30">Cart Totals</h2>
+                    <table class="table shop_table">
+                        <tbody>
+                            <tr class="shipping">
+                                <th>Order SubTotal</th>
+                                <td class="grandtotal">
+                                    $<span>@ViewBag.GrandTotal</span>
+                                </td>
+                            </tr>
+                            <tr class="shipping">
+                                <th>Shipping</th>
+                                <td>
+                                    <span>Free Shipping</span>
+                                </td>
+                            </tr>
+                            <tr class="order-total">
+                                <th><strong>Order Total</strong></th>
+                                <td class="grandtotal">
+                                    <strong>$<span class="amount">@ViewBag.GrandTotal</span></strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+
+    <script>
+
+        $(function () {
+
+            /*
+            * Increment Product
+            */
+
+            $("a.incproduct").click(function (e) {
+                e.preventDefault();
+
+                var productId = $(this).data("id");
+                var url = "/Cart/IncrementProduct";
+
+                $.getJSON(url, { productId: productId }, function (data) {
+
+                    $("td.qty" + productId).html(data.qty);
+
+                    var price = data.qty * data.price;
+                    var priceHtml = "$" + price.toFixed(2);
+
+                    $("td.total" + productId).html(priceHtml);
+
+                    var gt = parseFloat($("td.grandtotal span").text());
+                    var grandtotal = (gt + data.price).toFixed(2);
+
+                    $("td.grandtotal span").text(grandtotal);
+
+                }).done(function (data) {
+                    var url2 = "/Cart/PaypalPartial";
+
+                    $.get(url2, { productId: productId }, function (data) {
+                        $('div.paypaldiv').html(data);
+                    });
+                });
+            });
+
+            /////////////////////////////////////////
+
+            /*
+            * Decrement Product
+            */
+
+            $("a.decproduct").click(function (e) {
+                e.preventDefault();
+
+                var $this = $(this);
+                var productId = $(this).data("id");
+                var url = "/Cart/DecrementProduct";
+
+                $.getJSON(url, { productId: productId }, function (data) {
+
+                    if (data.qty == 0) {
+                        $this.parent().parent().fadeOut("fast", function () {
+                            location.reload();
+                        });
+                    }
+                    else {
+                        $("td.qty" + productId).html(data.qty);
+
+                        var price = data.qty * data.price;
+                        var priceHtml = "$" + price.toFixed(2);
+
+                        $("td.total" + productId).html(priceHtml);
+
+                        var gt = parseFloat($("td.grandtotal span").text());
+                        var grandtotal = (gt - data.price).toFixed(2);
+
+                        $("td.grandtotal span").text(grandtotal);
+                    }
+
+                }).done(function (data) {
+                    var url2 = "/Cart/PaypalPartial";
+
+                    $.get(url2, { productId: productId }, function (data) {
+                        $('div.paypaldiv').html(data);
+                    });
+                });
+            });
+
+            /////////////////////////////////////////
+
+            /*
+            * Remove Product
+            */
+
+            $("a.removeproduct").click(function (e) {
+                e.preventDefault();
+
+                var $this = $(this);
+                var productId = $(this).data("id");
+                var url = "/Cart/RemoveProduct";
+
+                $.get(url, { productId: productId }, function (data) {
+                    location.reload();
+                });
+            });
+
+            /////////////////////////////////////////
+
+            /*
+            * Place Order
+            */
+
+            $("a.placeorder").click(function (e) {
+                e.preventDefault();
+
+                var $this = $(this);
+
+                var url = "/Cart/PlaceOrder";
+
+                $(".ajaxbg").show();
+
+                $.post(url, { }, function (data) {
+                    $(".ajaxbg span").text("Thank you. You will now be redirected to paypal.");
+                    setTimeout(function () {
+                        $('form input[name="submit"]').click();
+                    }, 2000);
+                });
+            });
+
+            /////////////////////////////////////////
+
+        });
+
+    </script>
+
+
+}

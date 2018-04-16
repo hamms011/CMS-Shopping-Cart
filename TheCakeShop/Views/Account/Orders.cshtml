@@ -1,0 +1,67 @@
+﻿@model IEnumerable<TheCakeShop.Models.ViewModels.Account.OrdersForUsersVM>
+
+@{
+    ViewBag.Title = "Orders";
+}
+
+<section class="section-wrap login-register pt-0 pb-40">
+    <div class="container">
+        <div class="row">
+            <br />
+            <h2 class="text-center">Your Orders</h2>
+
+            @if (!Model.Any())
+            {
+                <h2 class="text-center">You have no Orders.</h2>
+            }
+            else
+            {
+
+
+                <table class="table table-bordered">
+                    <thead class="light">
+                        <tr>
+                            <th class="text-center">
+                                Order Number
+                            </th>
+                            <th class="text-center">
+                                Order Details
+                            </th>
+                            <th class="text-center">
+                                Ordered At
+                            </th>
+                            <th class="text-center">
+                                Total
+                            </th>
+                        </tr>
+                    </thead>
+
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.OrderNumber)
+                            </td>
+                            <td class="text-center">
+                                @foreach (var item2 in item.ProductsAndQty)
+                                {
+                                    @item2.Key @:x @item2.Value <br />
+                                }
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.CreatedAt)
+                            </td>
+                            <td class="text-center">
+                                $@Html.DisplayFor(modelItem => item.Total)
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            }
+        </div>
+
+    </div>
+
+</section>

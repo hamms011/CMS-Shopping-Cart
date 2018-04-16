@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<p></p>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+            <div class="row text-center">
+                <div class="col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card-box widget-flat border-custom bg-custom text-white">
+                        <a href="/Admin/Pages/Index" style="color:antiquewhite">
+                            <i class="fi-paper-stack"></i>
+                            <h3 class="m-b-10">@ViewBag.CountPages</h3>
+                            <p class="text-uppercase m-b-5 font-13 font-600">Pages</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card-box widget-flat border-success bg-success text-white">
+                        <a href="/Admin/Shop/Categories" style="color:antiquewhite">
+                            <i class="fi-bag"></i>
+                            <h3 class="m-b-10">@ViewBag.CountCategories</h3>
+                            <p class="text-uppercase m-b-5 font-13 font-600">Catogories</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card-box bg-danger widget-flat border-danger text-white">
+                        <a href="/Admin/Shop/Products" style="color:antiquewhite">
+                            <i class="fi-moon"></i>
+                            <h3 class="m-b-10">@ViewBag.CountProducts</h3>
+                            <p class="text-uppercase m-b-5 font-13 font-600">Cakes/Products</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card-box bg-purple widget-flat border-purple text-white">
+                        <a href="/Admin/Users/Index" style="color:antiquewhite">
+                            <i class="fi-moon"></i>
+                            <h3 class="m-b-10">@ViewBag.CountUsers</h3>
+                            <p class="text-uppercase m-b-5 font-13 font-600">Users</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row text-center">
+                <div class="col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card-box bg-warning widget-flat border-warning text-white">
+                        <a style="color:antiquewhite">
+                            <i class="fi-moon"></i>
+                            <h3 class="m-b-10">@ViewBag.CountCupcakes</h3>
+                            <p class="text-uppercase m-b-5 font-13 font-600">Cupcakes</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card-box bg-dark widget-flat border-dark text-white">
+                        <a style="color:antiquewhite">
+                            <i class="fi-moon"></i>
+                            <h3 class="m-b-10">@ViewBag.CountBirthdayCakes</h3>
+                            <p class="text-uppercase m-b-5 font-13 font-600">Birthday Cakes</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card-box bg-pink widget-flat border-pink text-white">
+                        <a style="color:antiquewhite">
+                            <i class="fi-moon"></i>
+                            <h3 class="m-b-10">@ViewBag.CountWeddingCakes</h3>
+                            <p class="text-uppercase m-b-5 font-13 font-600">Wedding Cakes</p>
+                        </a>
+                    </div>
+                </div><div class="col-sm-6 col-lg-6 col-xl-3">
+                    <div class="card-box bg-primary widget-flat border-primary text-white">
+                        <a style="color:antiquewhite">
+                            <i class="fi-moon"></i>
+                            <h3 class="m-b-10">@ViewBag.CountAnniversaryCakes</h3>
+                            <p class="text-uppercase m-b-5 font-13 font-600">Anniversary Cakes</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

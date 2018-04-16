@@ -1,0 +1,8 @@
+﻿@model IEnumerable<TheCakeShop.Models.ViewModels.Shop.CategoryVM>
+
+<ul class="list-no-dividers">
+    @foreach (var item in Model)
+    {
+        <li><a href="/Shop/Category/@item.Slug">@item.Name</a></li>
+    }
+</ul>

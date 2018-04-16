@@ -1,0 +1,22 @@
+﻿table.sorting tr:not(.home) {
+    cursor: pointer
+}
+
+.ui-state-highlight {
+    border: 1px dashed #ccc;
+}
+
+table.sorting.categories td {
+    padding: 10px !important;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-ImageUpload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}

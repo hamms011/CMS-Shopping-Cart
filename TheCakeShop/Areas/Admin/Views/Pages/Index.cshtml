@@ -1,0 +1,112 @@
+﻿@model IEnumerable<TheCakeShop.Models.ViewModels.Pages.PageVM>
+
+@{
+    ViewBag.Title = "Pages";
+}
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+
+            <script type="text/javascript">
+    @if (TempData["DM"] != null)
+    {
+        <text>
+            swal({
+                type: 'info',
+                title: '@TempData["DM"]',
+                showConfirmButton: false,
+                animation: false,
+                customClass: 'animated tada',
+                timer: 1700
+                })
+        </text>
+    }
+            </script>
+
+            <h2 class="text-center display-4">Manage Pages</h2>
+
+            @if (!Model.Any())
+            {
+                <h1 class="text-center">There are no Pages.</h1>
+            }
+            else
+            {
+                <p>
+                    @Html.ActionLink("Add New Page", "AddPage", null, new { @class = "btn btn-success waves-effect waves-light btn-lg" })
+                </p>
+                <table id="pages" class="table table-bordered sorting">
+                    <thead class="thead-light">
+                        <tr class="home">
+                            <th class="text-center">
+                                Title
+                            </th>
+                            <th class="text-center">
+                                Slug
+                            </th>
+                            <th class="text-center">
+                                Side Bar
+                            </th>
+                            <th class="text-center">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model)
+                    {
+                        <tr id="id_@item.Id" class="@item.Slug">
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Slug)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.HasSideBar)
+                            </td>
+                            <td class="text-center">
+                                @Html.ActionLink("Edit", "EditPage", new { id = item.Id }, new { @class = "btn btn-purple waves-effect waves-light btn-sm" })
+                                @Html.ActionLink("Details", "PageDetails", new { id = item.Id }, new { id = item.Id, @class = "btn btn-info waves-effect waves-light btn-sm" })
+                                @if (item.Slug != "home")
+                                {
+                                    @Html.ActionLink("Delete", "DeletePage", new { id = item.Id }, new { @class = "btn btn-danger waves-effect waves-light btn-sm delete" })
+                                }
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+
+    <script src="~/Assets/js/jquery-ui-min.js"></script>
+
+    <script>
+
+        $(function () {
+
+           
+
+            $("table#pages tbody").sortable({
+                items: "tr:not(.home)",
+                placeholder: "ui-state-highlight",
+                update: function () {
+                    var ids = $("table#pages tbody").sortable("serialize");
+                    var url = "/Admin/Pages/ReorderPages";
+
+                    $.post(url, ids, function (data) {
+                    });
+                }
+            });
+
+
+        });
+
+    </script>
+}

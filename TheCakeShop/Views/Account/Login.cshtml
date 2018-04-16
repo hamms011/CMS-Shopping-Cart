@@ -1,0 +1,79 @@
+﻿@model TheCakeShop.Models.ViewModels.Account.LoginUserVM
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<script type="text/javascript">
+    @if (TempData["SM"] != null)
+    {
+        <text>
+            swal({
+              type: 'success',
+              title: '@TempData["SM"]',
+              showConfirmButton: false,
+              timer: 2500
+                })
+        </text>
+    }
+</script>
+
+<section class="page-title text-center">
+    <div class="container relative clearfix">
+        <div class="title-holder">
+            <div class="title-text">
+                <h1 class="uppercase">Login</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+@using (Html.BeginForm())
+{
+
+    @Html.AntiForgeryToken()
+
+    <section class="section-wrap login-register pt-0 pb-40">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-5 col-sm-offset-1 mb-40">
+                    <div class="login">
+                        @Html.ValidationSummary(true, "", new { @class = "alert alert-warning" })
+                        <h4 class="uppercase">login</h4>
+                        <p class="form-row form-row-wide">
+                            <label>Username</label>
+                            @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "input-text" } })
+                            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                        </p>
+                        <p class="form-row form-row-wide">
+                            <label>Password</label>
+                            @Html.PasswordFor(model => model.Password, new { @class = "input-text" })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </p>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                @Html.CheckBoxFor(m => m.RememberME, new { @style = "display: inline;" })
+                                @Html.LabelFor(m => m.RememberME)
+                                @Html.ValidationMessageFor(m => m.RememberME, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <input type="submit" value="Login" class="btn">
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="register">
+                        <h4 class="uppercase">Register</h4>
+                        <p class="form-row form-row-wide">
+                            You can sign up free at The Cake Shop and get super awesome cakes and other services at very cheap prices.
+                        </p>
+                        <p>
+                            <a href="/Account/create-account/" class="btn" style="color:#fff; background-color:#444444;">Create Account</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+}
+

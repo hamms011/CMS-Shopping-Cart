@@ -1,0 +1,112 @@
+﻿@model IEnumerable<TheCakeShop.Models.ViewModels.Products.ProductVM>
+
+
+@{
+    ViewBag.Title = ViewBag.CategoryName;
+}
+
+
+<div class="container">
+    <ol class="breadcrumb">
+        <li>
+            <a href="/">Home</a>
+        </li>
+        <li>
+            <a href="">Shop</a>
+        </li>
+        <li class="active">
+            @ViewBag.CategoryName
+        </li>
+    </ol> <!-- end breadcrumbs -->
+</div>
+
+<section class="section-wrap pt-70 pb-40 catalogue">
+    <div class="container relative">
+        <div class="row">
+            <div class="col-md-9 catalogue-col right mb-50">
+                <!-- Banner -->
+                <div class="banner-wrap relative">
+                    <img src="~/FrontAssets/img/875630d136a8022.jpg">
+                    <div class="hero-holder text-center right-align">
+                        <div class="hero-lines mb-0">
+                            <h1 class="hero-heading white">@ViewBag.CategoryName</h1>
+                            <h4 class="hero-subheading white uppercase">HOT AND FRESH CAKES AT YOUR DOORSTEP</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="shop-catalogue grid-view left">
+                    <div class="row row-10 items-grid">
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-md-4 col-xs-6">
+                                <div class="product-item">
+                                    <div class="product-img">
+                                        <a href="/Shop/product-details/@item.Slug">
+                                            <img src="/Images/Uploads/Products/@item.Id/@item.ImageName">
+                                            <img src="/Images/Uploads/Products/@item.Id/@item.ImageName" class="back-img">
+                                        </a>
+                                        <div class="product-label">
+                                            <span class="sale">New</span>
+                                        </div>
+                                        
+                                        <a href="/Shop/product-details/@item.Slug" class="product-quickview">Quick View</a>
+                                    </div>
+                                    <div class="product-details">
+                                        <h3>
+                                            <a class="product-title" href="/Shop/product-details/@item.Slug">@Html.DisplayFor(modelItem => item.Name)</a>
+                                        </h3>
+                                        <span class="price">
+                                            <ins>
+                                                <span class="ammount">$@Html.DisplayFor(modelItem => item.Price)</span>
+                                            </ins>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div> <!-- end row -->
+                </div> <!-- end grid mode -->
+
+                <div class="clear"></div>
+                <!-- Pagination -->
+            </div> <!-- end col -->
+            <!-- Sidebar -->
+            <aside class="col-md-3 sidebar left-sidebar">
+                <!-- Categories -->
+                <div class="widget categories dropdown" style="visibility: visible;">
+                    <h3 class="widget-title uppercase">Categories</h3>
+                    @Html.Action("CategoryMenuPartiall", "Shop")
+                </div>
+
+                <!-- Filter by Price -->
+                <div class="widget filter-by-price clearfix">
+                    <h3 class="widget-title uppercase">Filter by Price</h3>
+
+                    <div id="slider-range"></div>
+                    <p>
+                        <label for="amount">Price:</label>
+                        <input type="text" id="amount" readonly style="border:0;">
+                        <a href="#" class="btn btn-sm btn-dark">Filter</a>
+                    </p>
+                </div>
+
+                <div class="widget tags clearfix">
+                    <h3 class="widget-title uppercase">Tags</h3>
+                    <a href="">Cakes</a>
+                    <a href="">Sweets</a>
+                    <a href="">Cupcakes</a>
+                    <a href="">Wedding</a>
+                    <a href="">Birthday</a>
+                    <a href="">Anniversary</a>
+                    <a href="">Party</a>
+                    <a href="">Chocolate</a>
+                    <a href="">Strawberry</a>
+                    <a href="">Peach</a>
+                    <a href="">Banana</a>
+
+                </div>
+
+            </aside> <!-- end sidebar -->
+        </div> <!-- end row -->
+    </div> <!-- end container -->
+</section> <!-- end catalogue -->

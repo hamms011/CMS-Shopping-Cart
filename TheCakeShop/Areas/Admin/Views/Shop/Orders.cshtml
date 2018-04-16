@@ -1,0 +1,87 @@
+﻿@model IEnumerable<TheCakeShop.Areas.Admin.Models.ViewModels.Shop.OrdersForAdmin>
+
+@{
+    ViewBag.Title = "Orders";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+
+            <h2 class="text-center display-4">Orders</h2>
+
+            @if (!Model.Any())
+            {
+                <h3 class="text-center display-4">There are no Orders.</h3>
+            }
+            else
+            {
+                <table id="datatable" class="table table-bordered dataTable no-footer">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="text-center">
+                                Order Number
+                            </th>
+                            <th class="text-center">
+                                Username
+                            </th>
+                            <th class="text-center">
+                                Order Details
+                            </th>
+                            <th class="text-center">
+                                Created At
+                            </th>
+                            <th class="text-center">
+                                Total
+                            </th>
+                        </tr>
+                    </thead>
+
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.OrderNumber)
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Username)
+                            </td>
+                            <td class="text-center">
+                                @foreach (var item2 in item.ProductsAndQty)
+                                {
+                                    @item2.Key @:x @item2.Value <br />
+                                }
+                            </td>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.CreatedAt)
+                            </td>
+                            <td class="text-center">
+                                $@Html.DisplayFor(modelItem => item.Total)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            $('#datatable').DataTable({
+
+            });
+        });
+
+
+    </script>
+
+
+}
+

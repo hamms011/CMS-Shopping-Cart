@@ -1,0 +1,49 @@
+﻿@model TheCakeShop.Models.ViewModels.Pages.PageVM
+
+@{
+    ViewBag.Title = "Page Details";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+            <div>
+                <h4 class="text-center display-4">@Model.Title Page Details</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Title)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Slug)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Slug)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Body)
+                    </dt>
+
+                    <dd>
+                        @Html.Raw(Model.Body)
+                    </dd>
+
+                </dl>
+            </div>
+            <div class="text-right text-right m-t-30">
+                <hr />
+                @Html.ActionLink("Edit", "EditPage", new { id = Model.Id }, new { @class = "btn btn-purple waves-effect waves-light btn-lg" })
+                @Html.ActionLink("Back to Pages", "Index", "Pages", null, new { @class = "btn btn-custom btn-lg" })
+            </div>
+
+        </div>
+    </div>
+</div>
+
